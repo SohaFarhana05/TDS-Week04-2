@@ -13,14 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Git
+      - name: Push changes using PAT
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "24f1001758@ds.study.iitm.ac.in"
-
-      - name: Make commit for 24f1001758@ds.study.iitm.ac.in
-        run: |
-          date >> daily-log.txt
+          git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}
           git add daily-log.txt
           git commit -m "Automated daily commit"
           git push
