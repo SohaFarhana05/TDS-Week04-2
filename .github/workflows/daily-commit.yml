@@ -1,23 +1,26 @@
-name: Daily Commit Workflow
+name: Daily Commit
 
 on:
   schedule:
-    - cron: '30 5 * * *'  # runs daily at 05:30 UTC
-  workflow_dispatch:       # allows manual trigger too
+    - cron: '20 6 * * *'  # runs daily at 6:20 UTC
 
 jobs:
-  daily-commit:
+  commit:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-      - name: Push changes using PAT
+      - name: 24f1001758@ds.study.iitm.ac.in – Make daily log
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "24f1001758@ds.study.iitm.ac.in"
-          git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}
+          echo "Run date: $(date)" >> daily-log.txt
+
+      - name: Push commit using PAT
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "24f1001758@ds.study.iitm.ac.in"
           git add daily-log.txt
           git commit -m "Automated daily commit"
+          git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}
           git push
+
